@@ -13,6 +13,15 @@ def insert_topic(request):
 
 
 def insert_webpage(request):
+    #updation of the records
+    Webpage.objects.filter(name='Priya').update(url='http://p.in')
+    Webpage.objects.filter(url='http://dk.in').update(email='dinesh@gmail.com')
+    Webpage.objects.update_or_create(name='Dhoni',defaults={'url':'http://msd.in'})
+    #deletion of the records
+    Webpage.objects.filter(name='Pallavi').delete()
+    Webpage.objects.filter(url='http://d.in').delete()
+    QLTO=Topic.objects.all()
+    d={'QLTO':QLTO}
     if request.method=='POST':
         tn=request.POST['tn']
         na=request.POST['na']
@@ -23,16 +32,25 @@ def insert_webpage(request):
         WO.save()
         return HttpResponse('Webpage is created successfully')
 
-    return render(request,'insert_webpage.html')
+    return render(request,'insert_webpage.html',d)
 
 def insert_access(request):
+    #updation of the records
+    AccessRecord.objects.filter(id=6).update(author='Pallavikiran')
+    AccessRecord.objects.filter(author='Dinesh Karthik').update(date='1982-05-12')
+    AccessRecord.objects.update_or_create(date='2001-03-10',defaults={'author':'Priya yadav'})
+    #deletion of the records
+    AccessRecord.objects.filter(author='Mutkundu kirti').delete()
+    AccessRecord.objects.filter(id=3).delete()
+    QLWO=Webpage.objects.all()
+    d={'QLWO':QLWO}
     if request.method=='POST':
         na=request.POST['na']
         date=request.POST['date']
         au=request.POST['au']
-        RWO=Webpage.objects.get(name=na)
+        RWO=Webpage.objects.get(id=na)
         AO=AccessRecord.objects.get_or_create(name=RWO,date=date,author=au)[0]
         AO.save()
         return HttpResponse('Access record is created successfully')
 
-    return render(request,'insert_access.html')
+    return render(request,'insert_access.html',d)
