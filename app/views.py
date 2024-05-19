@@ -54,3 +54,23 @@ def insert_access(request):
         return HttpResponse('Access record is created successfully')
 
     return render(request,'insert_access.html',d)
+
+
+
+def select_multiple(request):
+    QLTO=Topic.objects.all()
+    d={'QLTO':QLTO}
+    if request.method=='POST':
+        STL=request.POST.getlist('tn')
+        WOS=Webpage.objects.none()
+        for t in STL:
+            WOS=WOS|Webpage.objects.filter(topic_name=t)
+        d1={'WOS':WOS}
+        return render(request,'display_webpage.html',d1)
+    return render(request,'select_multiple.html',d)
+
+
+def checkbox(request):
+    QLTO=Topic.objects.all()
+    d={'QLTO':QLTO}
+    return render(request,'checkbox.html',d)
